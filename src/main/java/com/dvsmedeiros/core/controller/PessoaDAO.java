@@ -11,22 +11,21 @@ import com.dvsmedeiros.domain.Pessoa;
 
 public class PessoaDAO extends AbstractDAO<Pessoa> {
 
-	
 	public PessoaDAO() {
 		super("PESSOA", "PES_ID");
 	}
-	
+
 	protected PessoaDAO(String table, String id) {
 		super("PESSOA", "PES_ID");
 	}
-	
+
 	protected PessoaDAO(Connection conn, String table, String id) {
 		super(conn, "PESSOA", "PES_ID");
 	}
 
 	@Override
 	public void salvar(Pessoa entidade) {
-		
+
 		PreparedStatement pst = null;
 
 		try {
@@ -37,8 +36,8 @@ public class PessoaDAO extends AbstractDAO<Pessoa> {
 
 			pst = conn.prepareStatement(query, new String[] { "PES_ID" });
 			pst.setString(1, entidade.getNome());
-			pst.setString(2, entidade.getSobrenome() );
-			
+			pst.setString(2, entidade.getSobrenome());
+
 			pst.executeUpdate();
 
 			ResultSet rs = pst.getGeneratedKeys();
@@ -67,7 +66,6 @@ public class PessoaDAO extends AbstractDAO<Pessoa> {
 			}
 		}
 
-		
 	}
 
 	@Override
@@ -77,7 +75,7 @@ public class PessoaDAO extends AbstractDAO<Pessoa> {
 		controlTransaction = false;
 
 		try {
-			
+
 			openConnection();
 			conn.setAutoCommit(false);
 
@@ -94,7 +92,7 @@ public class PessoaDAO extends AbstractDAO<Pessoa> {
 			pst.setString(1, entidade.getNome());
 			pst.setString(2, entidade.getSobrenome());
 			pst.setLong(3, entidade.getId());
-			
+
 			pst.executeUpdate();
 			conn.commit();
 
@@ -125,12 +123,12 @@ public class PessoaDAO extends AbstractDAO<Pessoa> {
 		if (entidade != null && entidade.getId() > 0) {
 			query.append(" AND PES_ID = ? ");
 		}
-		
-		if (entidade != null && entidade.getNome() != null && !entidade.getNome().isEmpty() ) {
+
+		if (entidade != null && entidade.getNome() != null && !entidade.getNome().isEmpty()) {
 			query.append(" AND PES_NOME = ? ");
 		}
-		
-		if (entidade != null && entidade.getSobrenome() != null && !entidade.getSobrenome().isEmpty() ) {
+
+		if (entidade != null && entidade.getSobrenome() != null && !entidade.getSobrenome().isEmpty()) {
 			query.append(" AND PES_SOBRENOME = ? ");
 		}
 
@@ -138,24 +136,24 @@ public class PessoaDAO extends AbstractDAO<Pessoa> {
 			openConnection();
 			controlTransaction = false;
 			pst = conn.prepareStatement(query.toString());
-			
+
 			int index = 0;
-			
+
 			if (entidade != null && entidade.getId() > 0) {
 				pst.setLong(++index, entidade.getId());
 			}
-			
-			if (entidade != null && entidade.getNome() != null && !entidade.getNome().isEmpty() ) {
+
+			if (entidade != null && entidade.getNome() != null && !entidade.getNome().isEmpty()) {
 				pst.setString(++index, entidade.getNome());
 			}
-			
-			if (entidade != null && entidade.getSobrenome() != null && !entidade.getSobrenome().isEmpty() ) {
+
+			if (entidade != null && entidade.getSobrenome() != null && !entidade.getSobrenome().isEmpty()) {
 				pst.setString(++index, entidade.getSobrenome());
 			}
 
 			ResultSet rs = pst.executeQuery();
 			List<Pessoa> pessoas = new ArrayList<Pessoa>();
-			
+
 			while (rs.next()) {
 				Pessoa p = new Pessoa();
 				p.setId(rs.getInt("PES_ID"));
@@ -193,11 +191,11 @@ public class PessoaDAO extends AbstractDAO<Pessoa> {
 		try {
 			openConnection();
 			pst = conn.prepareStatement(query);
-			
+
 			pst.setLong(1, id);
 
 			ResultSet rs = pst.executeQuery();
-			
+
 			Pessoa p = new Pessoa();
 
 			while (rs.next()) {

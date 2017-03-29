@@ -13,7 +13,7 @@ public abstract class AbstractDAO<E extends EntidadeDominio> implements IDAO<E> 
 	protected String table;
 	protected String id;
 	protected boolean controlTransaction;
-	
+
 	public AbstractDAO(Connection conn, String table, String id) {
 		this.table = table;
 		this.id = id;
@@ -24,13 +24,13 @@ public abstract class AbstractDAO<E extends EntidadeDominio> implements IDAO<E> 
 		this.table = table;
 		this.id = id;
 	}
-	
+
 	@Override
 	public void excluir(E entiadade) {
-		
+
 		openConnection();
 		PreparedStatement pst = null;
-		
+
 		StringBuilder query = new StringBuilder();
 		query.append("DELETE FROM ");
 		query.append(table);
@@ -38,12 +38,12 @@ public abstract class AbstractDAO<E extends EntidadeDominio> implements IDAO<E> 
 		query.append(id);
 		query.append(" = ");
 		query.append(" ? ");
-		
+
 		try {
 			conn.setAutoCommit(false);
 			pst = conn.prepareStatement(query.toString());
 			pst.setLong(1, entiadade.getId());
-			
+
 			pst.executeUpdate();
 			conn.commit();
 		} catch (SQLException e) {
@@ -54,7 +54,7 @@ public abstract class AbstractDAO<E extends EntidadeDominio> implements IDAO<E> 
 			}
 			throw new RuntimeException(e.getMessage());
 		} finally {
-			
+
 			try {
 				pst.close();
 				if (controlTransaction)
@@ -64,7 +64,7 @@ public abstract class AbstractDAO<E extends EntidadeDominio> implements IDAO<E> 
 			}
 		}
 	}
-	
+
 	protected void openConnection() {
 		try {
 

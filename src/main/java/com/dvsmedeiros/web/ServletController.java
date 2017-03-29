@@ -12,15 +12,15 @@ import com.dvsmedeiros.core.controller.PessoaDAO;
 import com.dvsmedeiros.domain.Pessoa;
 
 @SuppressWarnings("serial")
-public class ServletController extends HttpServlet{
-	
+public class ServletController extends HttpServlet {
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+
 		List<Pessoa> result = new PessoaDAO().cosultar(null);
-		
+
 		req.setAttribute("pessoas", result);
 		req.getRequestDispatcher("/index.jsp").forward(req, resp);
-;	
+		;
 	}
 }
